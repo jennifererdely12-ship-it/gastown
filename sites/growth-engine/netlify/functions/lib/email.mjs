@@ -51,7 +51,7 @@ function shell(title, inner) {
   return `<!doctype html><html><body style="margin:0;padding:0;background:#f4f6f8;font-family:Arial,Helvetica,sans-serif;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:32px 16px;">
     <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:8px;overflow:hidden;">
-      <tr><td style="background:#1d4ed8;padding:20px 32px;color:#ffffff;font-size:20px;font-weight:bold;">${esc(biz.name)}</td></tr>
+      <tr><td style="background:#064e3b;padding:20px 32px;color:#ffffff;font-size:20px;font-weight:bold;"><span style="color:#f59e0b;">&#9650;</span> ${esc(biz.name)}</td></tr>
       <tr><td style="padding:28px 32px;color:#1f2937;font-size:15px;line-height:1.6;">
         <h1 style="margin:0 0 12px;font-size:22px;color:#111827;">${esc(title)}</h1>
         ${inner}
@@ -72,7 +72,7 @@ export function promoEmail(lead) {
     `<p>${greeting}</p>
      <p>${esc(promo.body)}</p>
      <p style="text-align:center;margin:24px 0;">
-       <a href="${esc(promo.ctaUrl)}" style="background:#1d4ed8;color:#ffffff;text-decoration:none;padding:12px 28px;border-radius:6px;font-weight:bold;display:inline-block;">${esc(promo.cta)}</a>
+       <a href="${esc(promo.ctaUrl)}" style="background:#047857;color:#ffffff;text-decoration:none;padding:12px 28px;border-radius:6px;font-weight:bold;display:inline-block;">${esc(promo.cta)}</a>
      </p>
      <p style="color:#6b7280;font-size:13px;">Offer code: <strong>${esc(promo.offerCode)}</strong></p>`
   );

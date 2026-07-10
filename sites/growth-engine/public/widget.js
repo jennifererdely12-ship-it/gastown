@@ -4,9 +4,9 @@
 // Netlify deploy):
 //
 //   <script src="/widget.js" defer
-//           data-business="Bluebird Plumbing & Heating"
-//           data-assistant="Robin"
-//           data-accent="#1d4ed8"></script>
+//           data-business="Apex Plumbing & Heating"
+//           data-assistant="Ace"
+//           data-accent="#047857"></script>
 //
 // It answers pricing/service questions via /api/chat, shows live open
 // appointment slots from /api/slots when the visitor wants to book, and
@@ -19,7 +19,7 @@
   var ds = script.dataset || {};
   var BUSINESS = ds.business || 'our team';
   var ASSISTANT = ds.assistant || 'Assistant';
-  var ACCENT = ds.accent || '#1d4ed8';
+  var ACCENT = ds.accent || '#047857';
   var API_BASE = ds.apiBase || '';
 
   var sessionId =

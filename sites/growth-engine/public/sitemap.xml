@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Submit this in Google Search Console (Indexing -> Sitemaps) after
-     replacing example.com with your real domain. Add a <url> entry for
-     every page you publish. -->
+<!-- Submit this in Google Search Console (Indexing -> Sitemaps). Add a
+     <url> entry for every page you publish. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://example.com/</loc>
+    <loc>https://apexplumbingheating.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>

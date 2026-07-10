@@ -14,8 +14,28 @@ Everything is driven by **one file: `business.config.json`** (name, services,
 prices, hours, service area, scheduling rules, email copy). The landing page
 HTML carries the same facts in its `EDIT ME` block — keep the two in sync.
 
-The sample business ("Bluebird Plumbing & Heating") is fictional placeholder
-content. Replace it with your own before deploying.
+The kit is currently branded as **Apex Plumbing & Heating** — assistant
+"Ace", promo code APEX10, emerald-and-gold branding, and the "Apex
+Guarantee" satisfaction promise, applied consistently across the page,
+structured data, chat, and emails.
+
+## Making the brand legally real
+
+The code is deploy-ready, but a few things only the owner can do:
+
+1. **Register the domain** `apexplumbingheating.com` (or your choice — then
+   update `business.config.json`, `index.html`, `robots.txt`, and
+   `sitemap.xml` to match) and point it at the Netlify site.
+2. **Register the business name** (LLC/DBA) in your state and confirm the
+   name isn't already taken by another local plumber — search your state's
+   business registry and Google Maps first.
+3. **Replace the placeholder phone, street address, license number, and
+   review counts** with your real ones — the 503-555 number, Belmont St
+   address, CCB #200123, and the 4.9★/312 figures are sample data.
+   Advertising a rating or license you don't hold is illegal; Google also
+   penalizes structured-data ratings that don't match real reviews.
+4. **Verify the sending domain in Resend** so confirmation and promo emails
+   come from `hello@` your real domain and land in inboxes.
 
 ## Deploy (Netlify)
 
@@ -43,8 +63,8 @@ Local development: `npm install && netlify dev` from this directory
 
 The page is built for this, but Google needs a few signals from you:
 
-1. **Replace every `example.com`** in `index.html`, `robots.txt`, and
-   `sitemap.xml` with your real domain, and fill in real business facts.
+1. **Use your real domain** everywhere (`index.html`, `robots.txt`,
+   `sitemap.xml`, `business.config.json`) and real business facts.
    Lead the `<title>` with what customers search: *service + city*
    ("Plumber in Portland, OR").
 2. **Validate the structured data** at
@@ -69,9 +89,9 @@ Netlify site:
 
 ```html
 <script src="/widget.js" defer
-        data-business="Your Business Name"
-        data-assistant="Robin"
-        data-accent="#1d4ed8"></script>
+        data-business="Apex Plumbing & Heating"
+        data-assistant="Ace"
+        data-accent="#047857"></script>
 ```
 
 Hosting the page elsewhere? Point `data-api-base` at your Netlify site
