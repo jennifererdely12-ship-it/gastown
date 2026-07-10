@@ -1,0 +1,7 @@
+# Let search engines crawl the marketing site, keep them out of the
+# admin dashboard. Replace example.com with your real domain.
+User-agent: *
+Allow: /
+Disallow: /admin.html
+
+Sitemap: https://example.com/sitemap.xml

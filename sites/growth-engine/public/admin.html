@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Growth Engine — Activity Dashboard</title>
+  <style>
+    * { box-sizing:border-box; margin:0; }
+    body { font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; background:#f1f5f9; color:#0f172a; padding:24px; }
+    .wrap { max-width:1100px; margin:0 auto; }
+    h1 { font-size:1.4rem; margin-bottom:16px; }
+    .auth { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
+    .auth input { flex:1; min-width:240px; padding:9px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:14px; }
+    button { padding:9px 18px; border:none; border-radius:8px; background:#1d4ed8; color:#fff; font-weight:600; cursor:pointer; font-size:14px; }
+    button.tab { background:#e2e8f0; color:#334155; }
+    button.tab.on { background:#1d4ed8; color:#fff; }
+    .tabs { display:flex; gap:8px; margin-bottom:14px; }
+    .msg { padding:10px 14px; border-radius:8px; margin-bottom:14px; font-size:14px; display:none; }
+    .msg.err { display:block; background:#fee2e2; color:#991b1b; }
+    .msg.ok  { display:block; background:#dcfce7; color:#14532d; }
+    table { width:100%; border-collapse:collapse; background:#fff; border-radius:10px; overflow:hidden; font-size:13px; }
+    th, td { text-align:left; padding:9px 12px; border-bottom:1px solid #e2e8f0; vertical-align:top; }
+    th { background:#f8fafc; color:#475569; font-weight:600; white-space:nowrap; }
+    td { max-width:340px; overflow-wrap:break-word; }
+    .pill { display:inline-block; padding:2px 9px; border-radius:10px; font-size:11px; font-weight:600; }
+    .t-chat { background:#dbeafe; color:#1e40af; } .t-lead { background:#fef3c7; color:#92400e; }
+    .t-appointment { background:#dcfce7; color:#166534; } .t-email { background:#ede9fe; color:#5b21b6; }
+    .t-error { background:#fee2e2; color:#991b1b; } .t-followup-run { background:#e2e8f0; color:#334155; }
+    .empty { padding:28px; text-align:center; color:#64748b; background:#fff; border-radius:10px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>📊 Growth Engine — Activity Dashboard</h1>
+  <div class="auth">
+    <input id="token" type="password" placeholder="Admin token (ADMIN_TOKEN environment variable)">
+    <button id="load">Load</button>
+  </div>
+  <div class="tabs">
+    <button class="tab on" data-kind="logs">Activity log</button>
+    <button class="tab" data-kind="leads">Leads</button>
+    <button class="tab" data-kind="appointments">Appointments</button>
+  </div>
+  <div class="msg" id="msg"></div>
+  <div id="out" class="empty">Enter your admin token and press Load.</div>
+</div>
+<script>
+(function () {
+  'use strict';
+  var kind = 'logs';
+  var msg = document.getElementById('msg');
+  var out = document.getElementById('out');
+  var tokenInput = document.getElementById('token');
+  try { tokenInput.value = sessionStorage.getItem('ge-token') || ''; } catch (e) {}
+
+  document.querySelectorAll('.tab').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.tab').forEach(function (x) { x.classList.remove('on'); });
+      b.classList.add('on');
+      kind = b.dataset.kind;
+      if (tokenInput.value) load();
+    });
+  });
+  document.getElementById('load').addEventListener('click', load);
+  tokenInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') load(); });
+
+  function esc(s) { var d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; }
+  function say(text, cls) { msg.textContent = text; msg.className = 'msg ' + cls; }
+
+  var COLS = {
+    logs: ['at', 'type', 'sessionId', 'detail'],
+    leads: ['createdAt', 'name', 'phone', 'email', 'service', 'status', 'followUpSentAt', 'sessionId'],
+    appointments: ['slot', 'name', 'phone', 'email', 'service', 'createdAt']
+  };
+
+  function detail(item) {
+    var skip = { type: 1, at: 1, sessionId: 1 };
+    return Object.keys(item).filter(function (k) { return !skip[k]; })
+      .map(function (k) { return k + ': ' + (typeof item[k] === 'object' ? JSON.stringify(item[k]) : item[k]); })
+      .join(' · ');
+  }
+
+  function load() {
+    var token = tokenInput.value.trim();
+    if (!token) { say('Enter the admin token first.', 'err'); return; }
+    try { sessionStorage.setItem('ge-token', token); } catch (e) {}
+    say('Loading…', 'ok');
+    fetch('/api/logs?kind=' + kind + '&limit=200', { headers: { Authorization: 'Bearer ' + token } })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, status: r.status, d: d }; }); })
+      .then(function (res) {
+        if (!res.ok) { say(res.d.error || ('Error ' + res.status), 'err'); return; }
+        say(res.d.count + ' ' + kind + ' loaded (newest first).', 'ok');
+        render(res.d.items);
+      })
+      .catch(function () { say('Network error.', 'err'); });
+  }
+
+  function render(items) {
+    if (!items.length) { out.className = 'empty'; out.textContent = 'Nothing here yet.'; return; }
+    var cols = COLS[kind];
+    var html = '<table><thead><tr>' + cols.map(function (c) { return '<th>' + esc(c) + '</th>'; }).join('') + '</tr></thead><tbody>';
+    items.forEach(function (it) {
+      html += '<tr>' + cols.map(function (c) {
+        if (c === 'type') return '<td><span class="pill t-' + esc(it.type) + '">' + esc(it.type) + '</span></td>';
+        if (c === 'detail') return '<td>' + esc(detail(it)) + '</td>';
+        return '<td>' + esc(it[c] || '') + '</td>';
+      }).join('') + '</tr>';
+    });
+    out.className = '';
+    out.innerHTML = html + '</tbody></table>';
+  }
+})();
+</script>
+</body>
+</html>
