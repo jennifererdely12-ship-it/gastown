@@ -1,0 +1,9 @@
+{
+  "name": "growth-engine",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Get-found-on-Google marketing site with AI chat, appointment booking, activity logs, and promotional follow-up email.",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}

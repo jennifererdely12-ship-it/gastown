@@ -1,0 +1,76 @@
+{
+  "business": {
+    "name": "Apex Plumbing & Heating",
+    "legalType": "Plumber",
+    "tagline": "Portland plumbing at the top of its game — booked online in 60 seconds",
+    "description": "Apex Plumbing & Heating is Portland's top-rated, family-owned plumbing and heating company. Upfront flat-rate pricing, same-week appointments, and 24/7 emergency service since 2012.",
+    "url": "https://apexplumbingheating.com",
+    "phone": "+1-503-555-0142",
+    "email": "hello@apexplumbingheating.com",
+    "address": {
+      "street": "2418 SE Belmont St",
+      "city": "Portland",
+      "state": "OR",
+      "zip": "97214",
+      "country": "US"
+    },
+    "geo": { "latitude": 45.5165, "longitude": -122.6404 },
+    "serviceArea": ["Portland", "Beaverton", "Gresham", "Tigard", "Lake Oswego", "Milwaukie", "Vancouver WA"],
+    "hoursText": "Mon-Fri 7:30 AM-6:00 PM, Sat 9:00 AM-2:00 PM, closed Sunday. 24/7 emergency service.",
+    "openingHours": ["Mo-Fr 07:30-18:00", "Sa 09:00-14:00"],
+    "rating": { "value": "4.9", "count": "312" },
+    "founded": "2012",
+    "license": "Oregon CCB #200123"
+  },
+  "services": [
+    { "name": "Drain cleaning", "description": "Clogged sinks, tubs, and main lines cleared with professional augers and hydro-jetting.", "priceFrom": 149 },
+    { "name": "Water heater repair & installation", "description": "Tank and tankless water heater diagnosis, repair, and same-week replacement.", "priceFrom": 189 },
+    { "name": "Leak detection & pipe repair", "description": "Electronic leak detection, burst pipe repair, and repiping.", "priceFrom": 165 },
+    { "name": "Furnace & heating repair", "description": "Furnace tune-ups, repairs, and thermostat installation.", "priceFrom": 129 },
+    { "name": "Fixture installation", "description": "Faucets, toilets, garbage disposals, and shower valves installed.", "priceFrom": 119 },
+    { "name": "Emergency plumbing (24/7)", "description": "Burst pipes, sewage backups, and no-hot-water emergencies, day or night.", "priceFrom": 249 }
+  ],
+  "pricing": {
+    "serviceCallFee": 79,
+    "serviceCallFeeNote": "The $79 service call fee is waived when you approve the recommended repair.",
+    "emergencyCalloutFee": 150,
+    "notes": [
+      "All prices are upfront, flat-rate quotes given before work begins — never hourly surprises.",
+      "Free estimates on repiping and water heater replacement jobs.",
+      "Senior and military discount: 10% off labor.",
+      "The Apex Guarantee: if you're not 100% satisfied, we come back and make it right — free."
+    ]
+  },
+  "scheduling": {
+    "timezone": "America/Los_Angeles",
+    "openDays": [1, 2, 3, 4, 5, 6],
+    "open": "08:00",
+    "close": "17:00",
+    "slotMinutes": 90,
+    "minLeadHours": 18,
+    "maxDaysOut": 14
+  },
+  "chat": {
+    "assistantName": "Ace",
+    "extraFacts": [
+      "Licensed, bonded, and insured (Oregon CCB #200123).",
+      "All technicians are background-checked employees, never subcontractors.",
+      "1-year labor warranty on every repair, backed by the Apex Guarantee.",
+      "Rated 4.9 stars across 312 verified customer reviews."
+    ]
+  },
+  "email": {
+    "fromName": "Apex Plumbing & Heating",
+    "fromAddress": "hello@apexplumbingheating.com",
+    "replyTo": "hello@apexplumbingheating.com",
+    "followUpDelayHours": 24,
+    "promo": {
+      "subject": "10% off your first visit from Portland's top-rated plumber",
+      "headline": "Ready when you are — with 10% off",
+      "body": "You recently chatted with Apex Plumbing & Heating, Portland's top-rated plumbing and heating team. If you haven't booked yet, we'd love to earn your business — mention code APEX10 when you schedule and take 10% off labor on your first visit. Every job is backed by the Apex Guarantee.",
+      "offerCode": "APEX10",
+      "cta": "Book your appointment",
+      "ctaUrl": "https://apexplumbingheating.com/#book"
+    }
+  }
+}
