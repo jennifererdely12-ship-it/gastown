@@ -570,25 +570,11 @@
   let apiHistory = [];
 
   // ─────────────────────────────────────────────────────────────────
-  // LEAD DELIVERY CONFIG — swap these per client before deploying
+  // LEAD DELIVERY — paste your Make.com (or Zapier) webhook URL below.
+  // See SETUP.md, step 4, for how to get this URL. Leads won't be
+  // delivered anywhere until this is set.
   // ─────────────────────────────────────────────────────────────────
-  const CONFIG = {
-    // 1. Make webhook URL (Webhooks → Google Sheets row + Gmail send)
-    //    Create a new scenario in make.com, add a Webhooks trigger,
-    //    copy the URL it gives you and paste it below.
-    makeWebhookUrl: 'https://hook.us1.make.com/REPLACE_WITH_YOUR_WEBHOOK_URL',
-
-    // 2. Twilio SMS via Netlify function
-    //    Deploy netlify/functions/send-sms.js (not included in this repo —
-    //    write it following the same pattern as netlify/functions/chat.js,
-    //    holding your Twilio credentials as environment variables),
-    //    then paste your live Netlify site URL here.
-    twilioFunctionUrl: 'https://YOUR-NETLIFY-SITE.netlify.app/.netlify/functions/send-sms',
-
-    // Set either to false to disable that path
-    enableMake:   true,
-    enableTwilio: true,
-  };
+  const LEAD_WEBHOOK_URL = 'https://hook.us1.make.com/REPLACE_WITH_YOUR_WEBHOOK_URL';
   // ─────────────────────────────────────────────────────────────────
 
   let ticket = { name:'', phone:'', location:'', issue:'', urgency:'' };
@@ -599,10 +585,11 @@
   }
   init();
 
-  // Fires both delivery paths the moment name + phone + issue are known
+  // Sends the captured lead to the webhook the moment name + phone + issue are known
   async function maybeFireLead(){
     if(leadFired) return;
     if(!ticket.name || !ticket.phone || !ticket.issue) return;
+    if(LEAD_WEBHOOK_URL.includes('REPLACE')) return;
     leadFired = true;
 
     const payload = {
@@ -615,32 +602,15 @@
       capturedAt: new Date().toLocaleString('en-US', { timeZone: 'America/Denver' }),
     };
 
-    // ── Path 1: Make webhook (Google Sheet + email) ────────────────
-    if(CONFIG.enableMake && !CONFIG.makeWebhookUrl.includes('REPLACE')){
-      try{
-        await fetch(CONFIG.makeWebhookUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        console.log('[Riley] Make webhook fired ✓', payload);
-      }catch(e){
-        console.warn('[Riley] Make webhook failed:', e);
-      }
-    }
-
-    // ── Path 2: Twilio SMS via Netlify function ────────────────────
-    if(CONFIG.enableTwilio && !CONFIG.twilioFunctionUrl.includes('YOUR-NETLIFY-SITE')){
-      try{
-        await fetch(CONFIG.twilioFunctionUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        console.log('[Riley] Twilio SMS fired ✓');
-      }catch(e){
-        console.warn('[Riley] Twilio function failed:', e);
-      }
+    try{
+      await fetch(LEAD_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      console.log('[Riley] Lead webhook fired ✓', payload);
+    }catch(e){
+      console.warn('[Riley] Lead webhook failed:', e);
     }
   }
 

@@ -3,6 +3,10 @@
 Static landing page with an embedded AI chat widget ("Riley") that answers
 service questions and captures leads.
 
+**→ New here? Start with [SETUP.md](./SETUP.md)** — a plain-English,
+step-by-step guide to getting this live and receiving leads, including how
+to re-brand it for a different contractor client.
+
 ## Chat widget architecture
 
 The browser **never** holds an Anthropic API key. `index.html` posts the
@@ -17,26 +21,18 @@ conversation to `/.netlify/functions/chat`, a serverless function
 Do not move the API key or system prompt back into `index.html` — that
 would expose the key to anyone who opens devtools.
 
-## Deploying (Netlify)
-
-1. Push this directory to a site connected to Netlify (or `netlify deploy`
-   from within `sites/ridgeline-home-services/`).
-2. In Site settings -> Environment variables, add `ANTHROPIC_API_KEY` with
-   a real key. Never commit it to git.
-3. `netlify.toml` already points Netlify at `netlify/functions` for the
-   function bundle.
-
 ## Lead delivery
 
-`CONFIG` at the top of the `<script>` block in `index.html` has two
-optional lead-delivery paths, fired once a name + phone + issue are known:
+One path, by design: when Riley learns a visitor's name, phone, and
+issue, the browser POSTs the lead as JSON to `LEAD_WEBHOOK_URL` (set near
+the top of the `<script>` block in `index.html`). Point that at a
+Make.com or Zapier webhook to turn it into a spreadsheet row, email, or
+text — see `SETUP.md` step 4 for the exact clicks.
 
-- `makeWebhookUrl` — a make.com webhook (e.g. writes a Google Sheet row and
-  sends an email). Replace the placeholder URL.
-- `twilioFunctionUrl` — a second Netlify function you write yourself,
-  following the same server-side-secret pattern as `chat.js` (hold the
-  Twilio credentials as environment variables, never in the browser).
-  That function isn't included here; add it before enabling this path, or
-  set `enableTwilio: false`.
+## Files
 
-Both are booleans in `CONFIG` and can be disabled independently.
+- `index.html` — the whole site, styles, and chat widget client.
+- `netlify/functions/chat.js` — serverless proxy holding the API key and
+  system prompt.
+- `netlify.toml` — tells Netlify where the function lives.
+- `SETUP.md` — non-technical deploy walkthrough.
